@@ -34,7 +34,7 @@ app.options('*', function(req, res) {
     var port;
 
     if (process.env.NODE_ENV === 'test') {
-        port = 4000;
+        port = 5555;
         db = config.test;
     } else {
         port = process.env.SERVER_PORT || 8080;
