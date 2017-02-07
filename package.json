@@ -4,7 +4,10 @@
   "description": "A service extracted from Aerodoc-Node - which provides the functionality for the push configuration.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "mocha",
+    "coverage": "./node_modules/istanbul/lib/cli.js cover -x **/app/controllers/** -x **/app/utility/** node_modules/mocha/bin/_mocha test/*"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,23 @@
   "bugs": {
     "url": "https://github.com/cfoskin/Push-configuration-service/issues"
   },
-  "homepage": "https://github.com/cfoskin/Push-configuration-service#readme"
+  "homepage": "https://github.com/cfoskin/Push-configuration-service#readme",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "chai": "3.5.0",
+    "cookie-parser": "1.4.3",
+    "ejs": "2.5.2",
+    "express": "4.14.0",
+    "express-boom": "1.0.0",
+    "express-handlebars": "3.0.0",
+    "mongodb": "2.2.19",
+    "mongoose": "4.6.3",
+    "mongoose-double": "0.0.1",
+    "morgan": "1.7.0"
+  },
+  "devDependencies": {
+    "istanbul": "0.4.5",
+    "mocha": "3.1.2",
+    "supertest": "2.0.1"
+  }
 }
