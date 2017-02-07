@@ -1,0 +1,19 @@
+{
+  "name": "push-configuration-service",
+  "version": "1.0.0",
+  "description": "A service extracted from Aerodoc-Node - which provides the functionality for the push configuration.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cfoskin/Push-configuration-service.git"
+  },
+  "author": "Colum Foskin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cfoskin/Push-configuration-service/issues"
+  },
+  "homepage": "https://github.com/cfoskin/Push-configuration-service#readme"
+}
