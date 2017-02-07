@@ -1,0 +1,14 @@
+{
+    "aerodoc": "http://localhost:3000",
+    "pushConfigs": [{
+        "pushApplicationId": "test",
+        "masterSecret": "secret",
+        "serverURL": "testURL",
+        "active": "false"
+    }, {
+        "pushApplicationId": "test2",
+        "masterSecret": "secret",
+        "serverURL": "testURL",
+        "active": "false"
+    }]
+}
