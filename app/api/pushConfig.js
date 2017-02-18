@@ -1,5 +1,15 @@
 'use strict';
 const PushConfig = require('../model/PushConfig');
+const winston = require('winston');
+const mdk_express = require('datawire_mdk_express');
+const mdk_winston = require('datawire_mdk_winston');
+// Route Winston logging to the MDK:
+const options = {
+    mdk: mdk_express.mdk,
+    name: 'push-configuration-service'
+};
+
+winston.add(mdk_winston.MDKTransport, options);
 
 var updateActiveState = (newPushConfig) => {
     PushConfig.find({ active: true })
@@ -30,14 +40,17 @@ var updateActiveState = (newPushConfig) => {
 
 exports.create = (req, res) => {
     const pushConfig = new PushConfig(req.body);
+    winston.info('Received request to create new push config: ' + pushConfig);
     pushConfig.save()
         .then(newPushConfig => {
             if (newPushConfig.active === true) {
                 updateActiveState(newPushConfig);
             }
+            winston.info('created push configs: ' + JSON.stringify(newPushConfig));
             return res.status(201).json(newPushConfig);
         })
         .catch(err => {
+            winston.error(JSON.stringify(err));
             return res.status(500).json({
                 message: 'Error creating push config',
                 error: err
