@@ -104,11 +104,14 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+    winston.info('Received request to delete push config: ' + req.params.id);
     PushConfig.remove({ _id: req.params.id })
         .then(pushConfig => {
+            winston.info('deleted push config: ' + JSON.stringify(pushConfig));
             return res.status(204).json(pushConfig);
         })
         .catch(err => {
+            winston.error(JSON.stringify(err));
             return res.status(404).json({
                 message: 'id not found',
                 error: err
