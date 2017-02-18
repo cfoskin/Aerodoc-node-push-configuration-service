@@ -12,6 +12,7 @@ const options = {
 winston.add(mdk_winston.MDKTransport, options);
 
 var updateActiveState = (newPushConfig) => {
+    winston.info('Received request to update active state of : ' + newPushConfig);
     PushConfig.find({ active: true })
         .then(pushConfigs => {
             pushConfigs.forEach((pushConfig) => {
@@ -19,9 +20,11 @@ var updateActiveState = (newPushConfig) => {
                     pushConfig.active = false;
                     return pushConfig.save()
                         .then(updatedPushConfig => {
+                            winston.info('updated config : ' + updatedPushConfig);
                             return res.status(200).json(updatedPushConfig);
                         })
                         .catch(err => {
+                            winston.error(JSON.stringify(err));
                             return res.status(500).json({
                                 message: 'Error updating active state of push config',
                                 error: err
