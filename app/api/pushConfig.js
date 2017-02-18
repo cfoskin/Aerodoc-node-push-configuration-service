@@ -86,13 +86,16 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
+    winston.info('Received request to update push config: ' + req.params.id);
     PushConfig.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { 'new': true })
         .then(pushConfig => {
             if (pushConfig != null) {
+                winston.info('updated push config' + JSON.stringify(pushConfig));
                 return res.status(200).json(pushConfig);
             }
         })
         .catch(err => {
+            winston.error(JSON.stringify(err));
             return res.status(404).json({
                 message: 'id not found',
                 error: err
