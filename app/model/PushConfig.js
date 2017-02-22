@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-
 const pushConfigSchema = mongoose.Schema({
   pushApplicationId: {
   	type: String,
