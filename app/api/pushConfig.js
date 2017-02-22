@@ -1,18 +1,17 @@
 'use strict';
 const PushConfig = require('../model/PushConfig');
 const winston = require('winston');
-const mdk_express = require('datawire_mdk_express');
-const mdk_winston = require('datawire_mdk_winston');
-// Route Winston logging to the MDK:
-const options = {
-    mdk: mdk_express.mdk,
-    name: 'push-configuration-service'
-};
+require('winston-loggly-bulk');
 
-winston.add(mdk_winston.MDKTransport, options);
+winston.add(winston.transports.Loggly, {
+    token: process.env.LOGGLY_TOKEN,
+    subdomain: "columfoskin",
+    tags: ["push-configuration-service"],
+    json: true
+});
 
 var updateActiveState = (newPushConfig) => {
-    winston.info('Received request to update active state of : ' + newPushConfig);
+    winston.info('Received request to update active state of : ' + newPushConfig + ' - requestId: ' + req.requestId);
     PushConfig.find({ active: true })
         .then(pushConfigs => {
             pushConfigs.forEach((pushConfig) => {
@@ -43,7 +42,7 @@ var updateActiveState = (newPushConfig) => {
 
 exports.create = (req, res) => {
     const pushConfig = new PushConfig(req.body);
-    winston.info('Received request to create new push config: ' + pushConfig);
+    winston.info('Received request to create new push config: ' + pushConfig + '- requestId: ' + req.requestId);
     pushConfig.save()
         .then(newPushConfig => {
             if (newPushConfig.active === true) {
@@ -62,7 +61,7 @@ exports.create = (req, res) => {
 };
 
 exports.getOne = (req, res) => {
-    winston.info('Received request to get push config' + req.params.id);
+    winston.info('Received request to get push config' + req.params.id + '- requestId: ' + req.requestId);
     PushConfig.findOne({ _id: req.params.id })
         .then(pushConfig => {
             if (pushConfig != null) {
@@ -80,7 +79,7 @@ exports.getOne = (req, res) => {
 };
 
 exports.getAll = (req, res) => {
-    winston.info('Received request to get all push configs');
+    winston.info('Received request to get all push configs - requestId: ' + req.requestId);
     PushConfig.find({}).exec()
         .then(pushConfigs => {
             winston.info('retrieved push configs' + JSON.stringify(pushConfigs));
@@ -89,7 +88,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    winston.info('Received request to update push config: ' + req.params.id);
+    winston.info('Received request to update push config: ' + req.params.id + ' - requestId: ' + req.requestId);
     PushConfig.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { 'new': true })
         .then(pushConfig => {
             if (pushConfig != null) {
@@ -107,7 +106,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    winston.info('Received request to delete push config: ' + req.params.id);
+    winston.info('Received request to delete push config: ' + req.params.id + ' - requestId: ' + req.requestId);
     PushConfig.remove({ _id: req.params.id })
         .then(pushConfig => {
             winston.info('deleted push config: ' + JSON.stringify(pushConfig));
