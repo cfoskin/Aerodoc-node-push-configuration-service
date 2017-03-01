@@ -10,6 +10,10 @@ winston.add(winston.transports.Loggly, {
     json: true
 });
 
+if(process.env.NODE_ENV === 'test'){
+    winston.remove(winston.transports.Console);
+};
+
 var updateActiveState = (newPushConfig) => {
     winston.info('Received request to update active state of : ' + newPushConfig + ' - requestId: ' + req.requestId);
     PushConfig.find({ active: true })
