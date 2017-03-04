@@ -26,6 +26,11 @@ app.use(function(req, res, next) {
     next();
 });
 
+// Swagger API docs.
+app.use('/aerodoc/push-configuration-service/docs', express.static(path.join(__dirname, './api-docs')));
+app.get('/aerodoc/push-configuration-service/docs', (req, res) => {
+    res.sendFile(path.join(__dirname, './api-docs/index.html'));
+});
 // fulfils pre-flight/promise request
 app.options('*', function(req, res) {
     res.sendStatus(200);
@@ -39,7 +44,7 @@ app.options('*', function(req, res) {
         port = 5555;
         db = config.test;
     } else {
-        port = process.env.SERVER_PORT || 8080;
+        port = process.env.SERVER_PORT || 8082;
         db = process.env.MONGO_URL || config.database;
     }
 
