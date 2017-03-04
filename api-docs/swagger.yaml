@@ -1,0 +1,198 @@
+swagger: '2.0'
+info:
+  title: Aerodoc Node Push Configuration Service API
+  description: Backend push configuration service for the Aerodoc application
+  version: 1.0.0
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /aerodoc/rest
+paths:
+  /pushConfigs:
+    get:
+      summary: List all push configurations.
+      description: |
+        Return the list of push configurations for the app.
+      operationId: listPushConfigs
+      tags:
+        - Push Configurations
+      responses:
+        '200':
+          description: Push configurations listed successfully
+          schema:
+            $ref: '#/definitions/PushConfigsListResponse'
+        '404':
+          description: No push configs found
+          schema:
+            $ref: '#/definitions/NotFoundResponse'
+        '500':
+          description: Application error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    post:
+      summary: Create a push configuration 
+      description: |
+        The pushConfig endpoint creates a new push configuration
+      operationId: createPushConfig
+      parameters:
+        - in: body
+          name: pushConfigInfo
+          description: The pushApplicationId of the push configuration
+          required: true
+          schema:
+            $ref: '#/definitions/PushConfig'
+      tags:
+        - Push Configurations
+      responses:
+        '201':
+          description: Sales agent successfully created
+          schema:
+            $ref: '#/definitions/CreationSuccessResponse'
+        '400':
+          description: Missing param
+          schema:
+            $ref: '#/definitions/BadRequestResponse'
+        '500':
+          description: Application error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /pushConfigs/{id}:
+    get:
+      summary: Get one push configuration
+      description: |
+        Return the a single push configuration
+      operationId: getPushConfiguration
+      parameters:
+        - $ref: "#/parameters/id"
+      tags:
+        - Push Configurations
+      responses:
+        '200':
+          description: Push configuration returned successfully
+          schema:
+            $ref: '#/definitions/GetSuccessResponse'
+        '404':
+          description: No push configuration found
+          schema:
+            $ref: '#/definitions/NotFoundResponse'
+        '500':
+          description: Application error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    put:
+      summary: Update a push configuration
+      description: |
+        The pushConfig endpoint updates an existing push configuration
+      operationId: updatePushConfig
+      parameters:
+        - $ref: "#/parameters/id"
+        - in: body
+          name: pushConfigInfo
+          description: The push configurations parameters
+          required: true
+          schema:
+            $ref: '#/definitions/CreatePushConfigParams'
+      tags:
+        - Push Configurations
+      responses:
+        '200':
+          description: Successfuly updated push configuration
+          schema:
+            $ref: '#/definitions/UpdateSuccessResponse'
+        '400':
+          description: Bad param
+          schema:
+            $ref: '#/definitions/BadRequestResponse'
+        '500':
+          description: Application error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    delete:
+      summary: Delete a push configuration
+      description: |
+        The pushConfig endpoint deletes an existing push configuration.
+      operationId: deletePushConfig
+      parameters:
+        - $ref: "#/parameters/id"
+      tags:
+        - Push Configurations
+      responses:
+        '200':
+          description: Successfuly deleted push configuration 
+          schema:
+            $ref: '#/definitions/DeleteSuccessResponse'
+        '404':
+          description: Id not found 
+          schema:
+            $ref: '#/definitions/NotFoundResponse'
+        '500':
+          description: Application error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+parameters:
+  id:
+    name: id
+    in: path
+    description: the id of the object
+    type: string
+    required: true
+definitions:
+  GeneralMessage:
+    type: object
+    properties:
+      message:
+        type: string
+  CreationSuccessResponse:
+    $ref: '#/definitions/GeneralMessage'
+  UpdateSuccessResponse:
+    $ref: '#/definitions/GeneralMessage'
+  DeleteSuccessResponse:
+    $ref: '#/definitions/GeneralMessage'
+  BadRequestResponse:
+    $ref: '#/definitions/GeneralMessage'
+  ErrorResponse:
+    $ref: '#/definitions/GeneralMessage'
+  NotFoundResponse:
+    $ref: '#/definitions/GeneralMessage'
+  GetSuccessResponse:
+    $ref: '#/definitions/GeneralMessage'
+  PushSuccessResponse:
+    $ref: '#/definitions/GeneralMessage'
+  CollectionInfo:
+    type: object
+    properties:
+      ns:
+        type: string
+        description: the namespace of the collection
+      name:
+        type: string
+        description: the name of the collection
+      count:
+        type: integer
+        description: the number of documents in the collection
+      size:
+        type: integer
+        description: the size of the collection in bytes
+  PushConfigsListResponse:
+    type: array
+    items:
+      $ref: '#/definitions/PushConfig'
+  PushConfig:
+    type: object
+    properties:
+      pushApplicationId:
+        type: string
+      masterSecret:
+        type: string
+      serverURL:
+        type: string
+      active:
+        type: boolean
+    required:
+      - pushApplicationId
+      - masterSecret
+      - serverURL
+      - active
