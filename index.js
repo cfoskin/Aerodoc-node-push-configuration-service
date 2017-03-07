@@ -44,7 +44,7 @@ app.options('*', function(req, res) {
         port = 5555;
         db = config.test;
     } else {
-        port = process.env.SERVER_PORT || 8082;
+        port = process.env.SERVER_PORT || 8080;
         db = process.env.MONGO_URL || config.database;
     }
 

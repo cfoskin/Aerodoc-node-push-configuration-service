@@ -7,7 +7,7 @@ const fixtures = require('../resources/fixtures.json');
 const should = require('chai').should;
 const expect = require('chai').expect;
 const pushConfigs = fixtures.pushConfigs;
-const pushConfigUrl = '/aerodoc/rest/pushConfigs/';
+const pushConfigUrl = '/aerodoc/rest/pushconfig/';
 var pushConfigId;
 const mongoose = require('mongoose');
 
