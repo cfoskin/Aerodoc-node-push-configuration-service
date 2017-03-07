@@ -4,11 +4,11 @@ const pushConfigApi = require('./app/api/pushConfig');
 module.exports = (function() {
     'use strict';
     const api = express.Router();
-    api.post('/pushConfigs', pushConfigApi.create);
-    api.delete('/pushConfigs/:id', pushConfigApi.delete);
-    api.get('/pushConfigs/:id', pushConfigApi.getOne);
-    api.get('/pushConfigs', pushConfigApi.getAll);
-    api.put('/pushConfigs/:id', pushConfigApi.update);
+    api.post('/pushconfig', pushConfigApi.create);
+    api.delete('/pushconfig/:id', pushConfigApi.delete);
+    api.get('/pushconfig/:id', pushConfigApi.getOne);
+    api.get('/pushconfig', pushConfigApi.getAll);
+    api.put('/pushconfig/:id', pushConfigApi.update);
 
     return api;
 })();
