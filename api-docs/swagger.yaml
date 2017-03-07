@@ -11,7 +11,7 @@ produces:
   - application/json
 basePath: /aerodoc/rest
 paths:
-  /pushConfigs:
+  /pushconfig:
     get:
       summary: List all push configurations.
       description: |
@@ -59,7 +59,7 @@ paths:
           description: Application error
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /pushConfigs/{id}:
+  /pushconfig/{id}:
     get:
       summary: Get one push configuration
       description: |
