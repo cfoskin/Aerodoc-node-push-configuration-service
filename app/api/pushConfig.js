@@ -24,23 +24,17 @@ var updateActiveState = (newPushConfig) => {
                     return pushConfig.save()
                         .then(updatedPushConfig => {
                             winston.info('updated config : ' + updatedPushConfig);
-                            return res.status(200).json(updatedPushConfig);
+                            return updatedPushConfig;
                         })
                         .catch(err => {
                             winston.error(JSON.stringify(err));
-                            return res.status(500).json({
-                                message: 'Error updating active state of push config',
-                                error: err
-                            });
+                            return err;
                         })
                 }
             });
         })
         .catch(err => {
-            return res.status(404).json({
-                message: 'no push configs found',
-                error: err
-            });
+            return err;
         })
 };
 
