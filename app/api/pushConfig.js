@@ -14,16 +14,17 @@ if (process.env.NODE_ENV === 'test') {
     winston.remove(winston.transports.Console);
 };
 
-var updateActiveState = (newPushConfig) => {
-   // winston.info('Received request to update active state of : ' + newPushConfig + ' - requestId: ' + req.requestId);
+var updateActiveState = (newPushConfig, requestId) => {
+   winston.info('Received request to update active state of : ' + newPushConfig + ' - requestId: ' + requestId);
     PushConfig.find({ active: true })
         .then(pushConfigs => {
             pushConfigs.forEach((pushConfig) => {
                 if (!pushConfig._id.equals(newPushConfig._id)) {
+                    winston.info('updateActiveState function: setting others to false.. - ' + requestId);
                     pushConfig.active = false;
                     return pushConfig.save()
                         .then(updatedPushConfig => {
-                            winston.info('updated config : ' + updatedPushConfig);
+                            winston.info('updateActiveState function: updated configs : ' + updatedPushConfig + ' - '+ requestId);
                             return updatedPushConfig;
                         })
                         .catch(err => {
@@ -45,7 +46,7 @@ exports.create = (req, res) => {
     pushConfig.save()
         .then(newPushConfig => {
             if (newPushConfig.active === true) {
-                updateActiveState(newPushConfig);
+                updateActiveState(newPushConfig, req.requestId);
             }
             winston.info('created push configs: ' + JSON.stringify(newPushConfig));
             return res.status(201).json(newPushConfig);
@@ -93,7 +94,7 @@ exports.update = (req, res) => {
         .then(pushConfig => {
             if (pushConfig !== null) {
                 if (pushConfig.active === true) {
-                    updateActiveState(pushConfig);
+                    updateActiveState(pushConfig, req.requestId);
                 }
                 winston.info('updated push config' + JSON.stringify(pushConfig));
                 return res.status(200).json(pushConfig);
