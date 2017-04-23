@@ -25,7 +25,7 @@ The API documentation is implemented using Swagger UI and can be found at:
 
 Docker Compose:
 
-To run service with all other backend services use Docker Compose with the docker-compose.yaml file.
+To run service with all other backend services use Docker Compose with the docker-compose.yaml file. Note: To seed the system with the sales agents data, run the application from the sales agent service, otherwise see swagger documentation for how to post sales agents to RESTful endpoints.
 
         docker-compose up
         
